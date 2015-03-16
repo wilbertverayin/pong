@@ -137,9 +137,9 @@ var game = function () {
 	document.addEventListener('keyup', function(event) {
 		var keyCode = ('which' in event) ? event.which : event.keyCode;
 		keyStatus[keyCode] = false;
-	}, true);
+	}, true),
 
-	var drawLine = function (startX, startY, endX, endY) {
+	drawLine = function (startX, startY, endX, endY) {
 		context.beginPath();
 		context.moveTo(startX, startY);
 		context.lineTo(endX, endY);
