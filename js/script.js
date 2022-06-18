@@ -1,6 +1,6 @@
 'use strict';
 
-var game = function () {
+function game () {
 	var W_CODE = 87,
 		S_CODE = 83,
 		UP_CODE = 38,
@@ -11,23 +11,18 @@ var game = function () {
 		PAD_WIDTH = 8,
 		PAD_HEIGHT = 100,
 		
-		HALF_PAD_WIDTH = PAD_WIDTH / 2,
 		HALF_PAD_HEIGHT = PAD_HEIGHT / 2,
-		LEFT = false,
-		RIGHT = true,
 		
 		ball_pos = [WIDTH/2, HEIGHT/2],
-		ball_vel = [3, -1],
 		paddle1_pos = HEIGHT/2-HALF_PAD_HEIGHT,
 		paddle2_pos = HEIGHT/2-HALF_PAD_HEIGHT,
-		paddle1_vel = 0,
-		paddle2_vel = 0,
+
 		score1 = 0,
 		score2 = 0,
 
 		context,
-		dx = 4,
-		dy = -4,
+		dx = 2,
+		dy = -2,
 		x = ball_pos[0],
 		y = ball_pos[1],
 	
@@ -38,6 +33,22 @@ var game = function () {
 			83 : false,
 			87 : false
 		},
+
+    resetBall = function () {
+      dx = 4;
+      dy = -4;
+      x = ball_pos[0];
+      y = ball_pos[1];
+    },
+
+    drawLine = function (startX, startY, endX, endY) {
+      context.beginPath();
+      context.moveTo(startX, startY);
+      context.lineTo(endX, endY);
+      context.strokeStyle = "#fff";
+        context.stroke();
+      context.closePath();
+    },
 
 		draw = function () {
 			//update left paddle
@@ -103,18 +114,14 @@ var game = function () {
 				if (x < BALL_RADIUS) {
 					if (y < paddle1_pos || y > paddle1_pos + PAD_HEIGHT) {
 						score2 = score2 + 1;
-					} else {
-						dx += dx*0.10;
-						dy += dy*0.10;
+            resetBall();
 					}
 				}
 
 				if (x > WIDTH - BALL_RADIUS) {
 					if (y < paddle2_pos || y > paddle2_pos + PAD_HEIGHT) {
 						score1 = score1 + 1;
-					} else {
-						dx += dx*0.10;
-						dy += dy*0.10;	
+            resetBall();
 					}
 				}
 			}
@@ -127,7 +134,7 @@ var game = function () {
 			y += dy;
 		};
 
-	setInterval(draw,10);
+	setInterval(draw, 100);
 
 	document.addEventListener('keydown', function(event) {
 		var keyCode = ('which' in event) ? event.which : event.keyCode;
@@ -137,14 +144,8 @@ var game = function () {
 	document.addEventListener('keyup', function(event) {
 		var keyCode = ('which' in event) ? event.which : event.keyCode;
 		keyStatus[keyCode] = false;
-	}, true),
+	}, true);
 
-	drawLine = function (startX, startY, endX, endY) {
-		context.beginPath();
-		context.moveTo(startX, startY);
-		context.lineTo(endX, endY);
-		context.strokeStyle = "#fff";
-  		context.stroke();
-		context.closePath();
-	}
-}
+};
+
+game();
